@@ -16,7 +16,7 @@
     toggle.setAttribute("aria-expanded", open);
   });
 
-  if (reduce) { veil.remove(); document.querySelector(".hero")?.classList.add("play"); revealAll(); return; }
+  if (reduce) { veil.remove(); document.querySelector(".hero")?.classList.add("play"); return; }
 
   const arrived = sessionStorage.getItem("vh-arrive") === "1";
   const seen = sessionStorage.getItem("vh-seen") === "1";
@@ -28,12 +28,12 @@
     requestAnimationFrame(() => requestAnimationFrame(() => {
       veil.classList.add("lift");
       document.querySelector(".hero")?.classList.add("play");
-      setTimeout(() => { veil.remove(); revealAll(); }, 1100);
+      setTimeout(() => veil.remove(), 1100);
     }));
   } else if (seen) {
     /* refresh or direct visit mid-session: a quick quiet lift */
     veil.classList.add("fade");
-    setTimeout(() => { veil.remove(); revealAll(); }, 560);
+    setTimeout(() => veil.remove(), 560);
     document.querySelector(".hero")?.classList.add("play");
   } else {
     /* first visit in this session: the doors open */
@@ -41,7 +41,7 @@
     setTimeout(() => {
       veil.classList.add("lift");
       document.querySelector(".hero")?.classList.add("play");
-      setTimeout(() => { veil.remove(); revealAll(); }, 1100);
+      setTimeout(() => veil.remove(), 1100);
     }, 350);
   }
 
@@ -63,6 +63,7 @@
   function revealAll() {
     document.querySelectorAll(".grow, .rise").forEach(el => el.classList.add("in"));
   }
+  if (!("IntersectionObserver" in window)) revealAll();
 
   /* growth on scroll */
   const io = new IntersectionObserver((entries) => {
